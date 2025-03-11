@@ -44,9 +44,12 @@ JEMHopQA データセット（日本語の説明可能なマルチホップ質�
 
 ## 参考リポジトリ
 
-本リポジトリ内で使用している Faiss インデックスの作成手順は、以下のリポジトリを参考にしています。
-
-[hotchpotch/wikipedia-passages-jawiki-embeddings-utils](https://github.com/hotchpotch/wikipedia-passages-jawiki-embeddings-utils)
+- [singletongue/wikipedia-utils](https://github.com/singletongue/wikipedia-utils)  
+    Wikipediaからのパッセージ作成方法を参照
+- [hotchpotch/wikipedia-passages-jawiki-embeddings-utils](https://github.com/hotchpotch/wikipedia-passages-jawiki-embeddings-utils)  
+    Faiss インデックス作成の実装例を参照
+- [facebookresearch/CRAG](https://github.com/facebookresearch/CRAG)  
+    Contrastive Retrieval-augmented Generation (CRAG) のLLMによる評価スクリプトを参照
 
 ## 引用
 
