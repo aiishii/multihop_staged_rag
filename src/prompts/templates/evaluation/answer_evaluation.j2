@@ -1,0 +1,90 @@
+あなたがモデルによる予測を評価する人間の専門家であると仮定する。正解であるground_truth-answerとモデルが出力した回答prediction-answerが与えられます。以下のステップに従って、prediction-answerがground_truth-answerと一致するかどうかを判断します：
+1: ground_truth-answerが常に正しいことを当然と考える。
+2: ground_truth-answerが確信がないことを示す場合、"score-answer"は0となる。
+3: prediction-answerがground_truth-answerと完全に一致する場合、"score-answer"は1となる。
+4: 数値情報が異なる場合、prediction-answerがground_truth-answerとほぼ正確に一致する数値を与える場合のみ、"score-answer"は1となる。
+5: prediction-answerの表記がground_truth-answerと異なる場合も、示しているエンティティや意味が同一であれば"score-answer"は1となる。
+6: prediction-answerがground_truth-answerの簡潔で正しい要約である場合、"score-answer"は 1 となる。
+7: prediction-answerがground_truth-answerよりも情報の粒度が詳細な場合は"score-answer"は 1 となり、情報の粒度が粗い場合は"score-answer"は0となる。ただし、一般的にほぼ同様の意味で使われる表現であれば"score-answer"は 1 となる。
+
+以下の例に基づいて判断し、score-answerをJSON形式で出力してください。
+例：
+入力：
+ground_truth-answer:1980年
+prediction-answer:データに情報が存在しないため回答できません。
+出力：
+score-answer:0
+
+入力：
+ground_truth-answer:渡邉理佐
+prediction-answer:波瑠
+出力：
+score-answer:0
+
+入力：
+ground_truth-answer:亜人 (漫画)
+prediction-answer:亜人
+出力：
+score-answer:1
+
+入力：
+ground_truth-answer:ウィリアム・シェイクスピア
+prediction-answer:William Shakespeare
+出力：
+score-answer:1
+
+入力：
+ground_truth-answer:YES
+prediction-answer:ヘイ・ジュード
+出力：
+score-answer:0
+
+入力：
+ground_truth-answer:ターミネーター
+prediction-answer:The Terminator
+出力：
+score-answer:1
+
+入力：
+ground_truth-answer:101756123人
+prediction-answer:1億200万人
+出力：
+score-answer:1
+
+入力：
+ground_truth-answer:28.3
+prediction-answer:26.66
+出力：
+score-answer:0
+
+入力：
+ground_truth-answer:女優
+prediction-answer:俳優
+出力：
+score-answer:1
+
+入力：
+ground_truth-answer:1950年3月14日
+prediction-answer:1950年3月
+出力：
+score-answer:0
+
+入力：
+ground_truth-answer:埼玉県浦和市
+prediction-answer:埼玉県
+出力：
+score-answer:0
+
+入力：
+ground_truth-answer:埼玉県
+prediction-answer:埼玉県浦和市
+出力：
+score-answer:1
+
+
+入力：
+question:{{ question }}
+ground_truth-derivation:{{ ground_truth_derivation }}
+ground_truth-answer:{{ ground_truth_answer }}
+prediction-derivation:{{ prediction_derivation }}
+出力：

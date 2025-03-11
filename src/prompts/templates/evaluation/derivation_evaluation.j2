@@ -1,0 +1,142 @@
+あなたがモデルによる予測を評価する人間の専門家であると仮定する。質問とモデルが出力した根拠prediction-derivationが与えられます。以下のステップに従って、根拠がground_truth-derivationと一致するかどうかを判断します：
+1: ground_truth-derivationが常に正しいことを当然と考える。
+2: prediction-derivationが確信がないことを示す場合、"score-derivation"は0となる。
+3: prediction-derivationがground_truth-derivationと完全に一致する場合、"score-derivation"は1となる。
+4: 数値情報が異なる場合、prediction-derivationがground_truth-derivationとほぼ正確に一致する数値を与える場合のみ、"score-derivation"は1となる。
+5: prediction-derivationの表記がground_truth-derivationと異なる場合も、示しているエンティティや意味が同一であれば"score-derivation"は1となる。
+6: prediction-derivationが質問の根拠として不十分であったり誤りが含まれている場合、"score-derivation"は0でなければならない。
+7: prediction-derivationがground_truth-derivationの簡潔で正しい要約である場合、"score-derivation"は 1 となる。
+8: prediction-derivationのトリプルがprediction-derivationのトリプルと表現が異なる場合も、トリプル全体で示す情報とトリプルの形式が正しければ、"score-derivation"は 1 となる。
+
+以下の例に基づいて判断し、score-derivation-list、score-derivation、explanationをJSON形式で出力してください。
+prediction-derivationの1つ1つの根拠に対し、score-derivationをscore-derivation-listとしてリスト形式で出力してください。
+すべてのprediction-derivationが質問の根拠として成立するかどうかをscore_derivationsとして出力してください。
+explanationは日本語で出力してください。
+例：
+入力：
+question:松田優作が最後に所属していた、芸能事務所の設立した年は？
+ground_truth-derivation:（松田優作，死没時の所属先，セントラル・アーツ）;（セントラル・アーツ，設立年，1980年）
+ground_truth-answer:1980年
+prediction-derivation:（松田優作，所属先，セントラル・アーツ）;（セントラル・アーツ，設立年，不明）
+出力：
+score-derivation-list: [1, 0]
+score-derivations:0
+explanation:【根拠不十分】セントラル・アーツの設立年の情報を持っておらず回答できていない。
+
+入力：
+question:渡邉理佐と波瑠、身長が高いのはどちらですか？
+ground_truth-derivation:（渡邉理佐，身長，167cm）;（波瑠，身長，164cm）
+ground_truth-answer:渡邉理佐
+prediction-derivation:（渡邉理佐，身長，167cm）;（波瑠，身長，164cm）
+出力：
+score-derivation-list: [1, 1]
+score-derivations:1
+explanation:【一致】ground_truthと一致する。
+
+入力：
+question:渡邉理佐と波瑠、身長が高いのはどちらですか？
+ground_truth-derivation:（渡邉理佐，身長，167cm）;（波瑠，身長，164cm）
+ground_truth-answer:渡邉理佐
+prediction-derivation:（渡邉理佐，身長，167cm）;（波瑠，身長，NOTFOUND）
+出力：
+score-derivation-list: [1, 0]
+score-derivations:0
+explanation:【根拠不十分】波瑠の身長情報が不足していて、数値を比較する質問に回答するには不十分なためscoreは0。
+
+
+入力：
+question:鳥山明と内藤剛志どちらが先にうまれましたか？
+ground_truth-derivation:（鳥山明，誕生日，1955年4月5日）;（内藤剛志，誕生日，1955年5月27日）
+ground_truth-answer:鳥山明
+prediction-derivation:（鳥山明，生年，1955年）;（内藤剛志，生年，1955年）
+出力：
+score-derivation-list: [0, 0]
+score-derivations:0
+explanation:【根拠不十分】生年情報はground_truthと矛盾しないが月日の情報が不足し、質問に答えることができないため0。
+
+入力：
+question:音尾琢真と又吉直樹はどちらが若いですか？
+ground_truth-derivation:（音尾琢真，生年月日，1976年3月21日）;（又吉直樹，生年月日，1980年6月2日）
+ground_truth-answer:又吉直樹
+prediction-derivation:（音尾琢真，生年，1976年）;（又吉直樹，生年，1980年）
+出力：
+score-derivation-list: [1, 1]
+score-derivations:1
+explanation:【十分】ground_truthより情報が粗いがquestionに答えるための根拠としては十分であるためscoreは1。
+
+入力：
+question:ミホノブルボンとテイエムオペラオー、獲得賞金が多いのはどちらの馬ですか？
+ground_truth-derivation:（ミホノブルボン，獲得賞金，5億2596万9800円）;（テイエムオペラオー，獲得賞金，18億3518万9000円）
+ground_truth-answer:テイエムオペラオー
+prediction-derivation:（ミホノブルボン，獲得賞金，約5.8億）;（テイエムオペラオー，獲得賞金，約18億円）
+出力：
+score-derivation-list: [0, 1]
+score-derivations:0
+explanation:【数値不一致】ミホノブルボンの獲得賞金がground_truthと一致しないためscoreは0。
+
+入力：
+question:ミホノブルボンとテイエムオペラオー、獲得賞金が多いのはどちらの馬ですか？
+ground_truth-derivation:（ミホノブルボン，獲得賞金，5億2596万9800円）;（テイエムオペラオー，獲得賞金，18億3518万9000円）
+ground_truth-answer:テイエムオペラオー
+prediction-derivation:（ミホノブルボン，獲得賞金，NOTFOUND）;（テイエムオペラオー，獲得賞金，約18億円）
+出力：
+score-derivation-list: [0, 1]
+score-derivations:0
+explanation:【根拠不十分】derivationの情報が不足し数値を比較する質問の根拠として不十分なためscoreは0。
+
+入力：
+question:佐川宣寿と新原浩朗では官僚歴が長いのはどちらでしょうか？
+ground_truth-derivation:（佐川宣寿，大蔵省入省年，1982年）;（佐川宣寿，辞職年，2018年）;（新原浩朗，通商産業省入省年，1984年）;（新原浩朗，現職，内閣官房内閣審議官（内閣官房副長官補付）兼国際博覧会推進本部事務局長兼成長戦略会議事務局長代理）
+ground_truth-answer:新原浩朗
+prediction-derivation:（佐川宣寿，大蔵省入省年，1982年）;（新原浩朗，通商産業省入省年，1984年）
+出力：
+score-derivation-list: [0, 0]
+score-derivations:0
+explanation:【根拠不十分】derivationに官僚歴を算出するための情報が不足していて根拠として不十分であるためscoreは0。
+
+入力：
+question:映画『ターミネーター』と『アリー/ スター誕生』のうち、先に公開されたのはどちらですか？
+ground_truth-derivation:（ターミネーター (映画)，公開年，1984年）;（アリー/ スター誕生，公開年，2018年）
+ground_truth-answer:ターミネーター
+prediction-derivation:（The Terminator，公開年，1984年）;（アリー/ スター誕生，公開年，2018年）
+出力：
+score-derivation-list: [1, 1]
+score-derivations:1
+explanation:【一致】ターミネーターの表記はground_truthと異なるが同一のものを指すため正確に一致する。
+
+入力：
+question:映画『ターミネーター』と『アリー/ スター誕生』のうち、先に公開されたのはどちらですか？
+ground_truth-derivation:（ターミネーター (映画)，公開年，1984年）;（アリー/ スター誕生，公開年，2018年）
+ground_truth-answer:ターミネーター
+prediction-derivation:（The Terminator，公開年，1983年）;（アリー/ スター誕生，公開年，2018年）
+出力：
+score-derivation-list: [0, 1]
+score-derivations:0
+explanation:【数値不一致】derivationのThe Terminatorの公開年がground_truthと一致しないためscoreは0。
+
+入力：
+question:香取神宮と出雲大社、千葉県にあるのは香取神宮ですか？
+ground_truth-derivation:（香取神宮，所在地，千葉県）;（出雲大社，所在地，島根県）
+ground_truth-answer:YES
+prediction-derivation:（香取神宮，所在地，千葉県香取市）;（出雲大社，所在地，島根県出雲市）
+出力：
+score-derivation-list: [1, 1]
+score-derivations:1
+explanation:【適切】derivationの所在地の表記はground_truthよりも詳細であるが正しい情報であるため正解とする。
+
+入力：
+question:小林多喜二とチャールズ・ディケンズのふたりのうち、作家になる前にジャーナリストとして働いていたことがあるのはどちらですか？
+ground_truth-derivation:（小林多喜二，作家になる前の勤務先，北海道拓殖銀行）;（チャールズ・ディケンズ，作家になる前の職業，事務員およびジャーナリスト）
+ground_truth-answer:チャールズ・ディケンズ
+prediction-derivation:（小林多喜二，作家になる前の勤務先，北海道拓殖銀行）;（チャールズ・ディケンズ，作家になる前の職業，ジャーナリスト）
+出力：
+score-derivation-list: [1, 1]
+score-derivations:1
+explanation:【十分】ground_truthのチャールズ・ディケンズの作家になる前の職業はすべて含まれていないが、questionに答えるための根拠としては十分であるためscoreは1。
+
+入力：
+question:{{ question }}
+ground_truth-derivation:{{ ground_truth_derivation }}
+ground_truth-answer:{{ ground_truth_answer }}
+prediction-derivation:{{ prediction_derivation }}
+出力：
