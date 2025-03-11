@@ -40,7 +40,7 @@ python scripts/evaluate_results.py --prediction_file output.tsv
 
 ## データセット
 
-JEMHopQA データセット（日本語の説明可能なマルチホップ質問応答データセット）を使用しています。データセットの詳細とアクセス方法は [こちら](https://github.com/aiishii/JEMHopQA/data/README.md) を参照してください。
+JEMHopQA データセット（日本語の説明可能なマルチホップ質問応答データセット）を使用しています。データセットの詳細とアクセス方法は [こちら](https://github.com/aiishii/JEMHopQA) を参照してください。
 
 ## 参考リポジトリ
 
