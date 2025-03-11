@@ -56,7 +56,7 @@ JEMHopQA データセット（日本語の説明可能なマルチホップ質�
 本研究を引用する場合は、以下の形式を使用してください：
 
 ```
-@inproceedings{ishii2025staged_rag},
+@inproceedings{ishii2025stagedrag},
   title={構造化知識 RAG・文書ベース RAG を段階的に利用したマルチホップ QA に対する LLM の精度向上},
   author={石井愛 and 井之上直也 and 鈴木久美 and 関根聡},
   booktitle={言語処理学会第31回年次大会発表論文集},
