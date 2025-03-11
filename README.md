@@ -3,7 +3,7 @@
 > **⚠️ 注意: このリポジトリは現在作成中です**  
 > このプロジェクトは整備段階にあり、現時点では一部の機能やドキュメントが不完全である可能性があります。
 
-このリポジトリは論文「構造化知識 RAG・文書ベース RAG を段階的に利用したマルチホップ QA に対する LLM の精度向上」のソースコードを提供します。
+このリポジトリは論文「[構造化知識 RAG・文書ベース RAG を段階的に利用したマルチホップ QA に対する LLM の精度向上](https://www.anlp.jp/proceedings/annual_meeting/2025/pdf_dir/Q7-1.pdf)」のソースコードを提供します。
 
 ## 概要
 
@@ -19,8 +19,8 @@ LLM のハルシネーション（事実と矛盾する情報生成の課題）�
 ## インストール方法
 
 ```bash
-git clone https://github.com/aiishii/JEMHopQA.git
-cd JEMHopQA
+git clone https://github.com/aiishii/multihop_staged_rag.git
+cd multihop_staged_rag
 pip install -r requirements.txt
 ```
 
