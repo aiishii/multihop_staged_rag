@@ -42,6 +42,12 @@ python scripts/evaluate_results.py --prediction_file output.tsv
 
 JEMHopQA データセット（日本語の説明可能なマルチホップ質問応答データセット）を使用しています。データセットの詳細とアクセス方法は [こちら](https://github.com/aiishii/JEMHopQA/data/README.md) を参照してください。
 
+## 参考リポジトリ
+
+本リポジトリ内で使用している Faiss インデックスの作成手順は、以下のリポジトリを参考にしています。
+
+[hotchpotch/wikipedia-passages-jawiki-embeddings-utils](https://github.com/hotchpotch/wikipedia-passages-jawiki-embeddings-utils)
+
 ## 引用
 
 本研究を引用する場合は、以下の形式を使用してください：
